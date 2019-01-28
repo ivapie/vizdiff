@@ -24,14 +24,19 @@ var comparateImage = require('./comparateScreenShots')
 */
 
 
-app.post('/', function (req, res) {
+app.post('/', function (req, res ,next) {
     var arr = req.body.screenshots
     var screenShots = new comparateImage(arr).init()
-    screenShots.then( data => {
-        res.json(data);
-    }).catch( err => {
-        res.json(err);
-    })
+    try {
+        screenShots.then( data => {
+            res.json(data);
+        }).catch( err => {
+            res.json(err);
+        })
+    } catch (error) {
+        res.json(error);
+    }
+    next();
 });
 
 app.listen(3000, function () {

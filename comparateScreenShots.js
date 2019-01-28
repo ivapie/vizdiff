@@ -46,6 +46,23 @@ class ComparateScreenShot {
   init() {
     let self = this
     return new Promise(function (resolve, reject) {
+
+      if(!Array.isArray(self.screenshots))
+        resolve({ status: "Error", response: "Request params will be array with 2 string as paths { 'screenshots': ['imgs/1.png', 'imgs/2.png'] }" })
+
+
+      // TODO: Validate 2 URL before to start process
+      self.screenshots.map( (url) => {
+        let pathUrl = path.join(__dirname, url)
+        console.log("pathUrl", pathUrl)
+        try {
+          fs.readFileSync(pathUrl)
+        } catch (error) {
+          throw { status: "Error", response: error}
+        }
+      })
+
+
       if (self.screenshots.length == 2) {
         self.compare()
           .then(r => { resolve({ status: "Complete", downloadImage: self.diffImage, response: self.response.message, }) })
