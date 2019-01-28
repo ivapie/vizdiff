@@ -51,7 +51,7 @@ function diffImage(image) {
 	await browser.close();
  */
 	compareScreenshots(
-    '/imgs/1.png', 
+    '/imgs/11.png', 
     '/imgs/2.png'
   ).then( data => {
     console.log(data)

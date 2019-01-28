@@ -49,7 +49,7 @@ class ComparateScreenShot {
           .then(r => { resolve({ status: "Complete", response: self.response.message }) })
           .catch(e => { reject({ status: "Error", response: e }) })
       }else{
-        resolve({ status: "Error", response: "You need 2 images" })
+        resolve({ status: "Error", response: "You need only 2 images" })
       }
     })
   }
@@ -115,7 +115,7 @@ class ComparateScreenShot {
     let self = this
     return new Promise(function (resolve, reject) {
       getColors(image).then(colors => {
-        self.response.message = JSON.stringify(colors)
+        self.response.message = colors
         resolve();
       }).catch(err => {
         self.response.message = e
@@ -153,19 +153,8 @@ process.on('unhandledRejection', (reason, error) => {
   console.log(reason);
 });
 
+module.exports = ComparateScreenShot
 
-// Options
-let screenshots = [
-  '/imgs/1.png',
-  '/imgs/2.png'
-]
-
-let colors = new ComparateScreenShot(screenshots).init()
-
-// Run
-colors.then(data => {
-  console.log(data)
-})
 
 
 
