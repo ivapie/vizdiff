@@ -4,6 +4,7 @@ const pixelmatch = require('pixelmatch');
 const PNG = require('pngjs').PNG;
 const path = require('path')
 const getColors = require('get-image-colors')
+const os = require("os")
 
 /**
  * Creates a ComparateScreenShot.
@@ -13,6 +14,7 @@ const getColors = require('get-image-colors')
 class ComparateScreenShot {
   constructor(screenshots) {
     this.screenshots = screenshots
+    this.diffImage
     this.response = {
       status: null,
       message: null
@@ -46,7 +48,7 @@ class ComparateScreenShot {
     return new Promise(function (resolve, reject) {
       if (self.screenshots.length == 2) {
         self.compare()
-          .then(r => { resolve({ status: "Complete", response: self.response.message }) })
+          .then(r => { resolve({ status: "Complete", downloadImage: self.diffImage, response: self.response.message, }) })
           .catch(e => { reject({ status: "Error", response: e }) })
       }else{
         resolve({ status: "Error", response: "You need only 2 images" })
@@ -92,18 +94,26 @@ class ComparateScreenShot {
     return new Promise(function (resolve, reject) {
 
       diff = new PNG({ width: res[0].width, height: res[0].height });
-      createImage = fs.createWriteStream('diff.png')
+
+      self.diffImage = 'diff/' + self.getTime() + '.png'
+
+      createImage = fs.createWriteStream(self.diffImage)
 
       pixelmatch(res[0].data, res[1].data, diff.data, res[0].width, res[0].height, { threshold: 0.1 });
       diff.pack().pipe(createImage)
 
       createImage.on('finish', function () {
-        resolve(self.getPaletteColors(path.join(__dirname, 'diff.png')));
+        resolve(self.getPaletteColors(path.join(__dirname, self.diffImage)));
       });
 
     }).catch((err) => {
       throw err
     })
+  }
+
+  getTime(){
+    var time = new Date();
+    return time.getTime();
   }
 
   /**
