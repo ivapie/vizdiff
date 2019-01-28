@@ -7,30 +7,30 @@ var getColors = require('get-image-colors')
 
 function compareScreenshots(file1, file2) {
   return new Promise(function(resolve, reject){
- 	  var img1 = fs.createReadStream(file1).pipe(new PNG()).on('parsed', doneReading),
-	    img2 = fs.createReadStream(file2).pipe(new PNG()).on('parsed', doneReading),
-	    filesRead = 0;
+ 	  var img1 = fs.createReadStream( path.join(__dirname, file1) ).pipe(new PNG()).on('parsed', doneReading),
+	      img2 = fs.createReadStream( path.join(__dirname, file2) ).pipe(new PNG()).on('parsed', doneReading),
+        filesRead = 0;
 
     function doneReading() {
       if (++filesRead < 2) 
         return;
     
       var diff = new PNG({width: img1.width, height: img1.height});
-	    pixelmatch(img1.data, img2.data, diff.data, img1.width, img1.height, {threshold: 0.1});
-      diff.pack().pipe(fs.createWriteStream('diff.png'))
-
-
-
-      var data = fs.readFileSync('diff.png');
-      var png = PNG.sync.read(data);
-      resolve(png);
-
+      pixelmatch(img1.data, img2.data, diff.data, img1.width, img1.height, {threshold: 0.1});
+      
+      var isCreated = fs.createWriteStream('diff.png')
+      diff.pack().pipe(isCreated)
+      
+      isCreated.on('finish', function(){
+        diffImage( path.join(__dirname, 'diff.png') );
+        resolve();
+      });
     }
   })
 }
 
 function diffImage(image) {
-  getColors('/Users/ivanpiedra/Desktop/vizdiff/diff.png').then(colors => {
+  getColors(image).then(colors => {
       console.log('Response', colors)     
     })
 }
@@ -51,11 +51,10 @@ function diffImage(image) {
 	await browser.close();
  */
 	compareScreenshots(
-    '/Users/ivanpiedra/Desktop/vizdiff/imgs/1.png', 
-    '/Users/ivanpiedra/Desktop/vizdiff/imgs/2.png'
+    '/imgs/1.png', 
+    '/imgs/2.png'
   ).then( data => {
     console.log(data)
-    // diffImage('/Users/ivanpiedra/Desktop/vizdiff/diff.png');
   }).catch(err => {
     console.log("err", err)
   }) ;

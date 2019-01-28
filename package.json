@@ -1,1 +1,27 @@
-
+{
+  "name": "vizdiff",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test-chaining-promises.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivapie/vizdiff.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivapie/vizdiff/issues"
+  },
+  "homepage": "https://github.com/ivapie/vizdiff#readme",
+  "dependencies": {
+    "get-image-colors": "^2.0.0",
+    "pixelmatch": "^4.0.2",
+    "pngjs": "^3.3.3",
+    "puppeteer": "^1.11.0",
+    "raven": "^2.6.4"
+  }
+}
