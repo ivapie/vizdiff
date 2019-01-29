@@ -6,6 +6,7 @@ var screenshots = [
 ]
 
 var colors = new ComparateScreenShots(screenshots).init()
+
 colors.then(data => {
   console.log( JSON.stringify(data) )
 })

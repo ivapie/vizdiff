@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(bodyParser.urlencoded({ extended: false })); // support encoded bodies
 var comparateImage = require('./comparateScreenShots')
 
 /*
@@ -24,7 +24,7 @@ var comparateImage = require('./comparateScreenShots')
 */
 
 
-app.post('/', function (req, res ,next) {
+app.post('/', function (req, res) {
     var arr = req.body.screenshots
     var screenShots = new comparateImage(arr).init()
     try {
@@ -36,7 +36,7 @@ app.post('/', function (req, res ,next) {
     } catch (error) {
         res.json(error);
     }
-    next();
+
 });
 
 app.listen(3000, function () {

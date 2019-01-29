@@ -46,7 +46,7 @@ class ComparateScreenShot {
   init() {
     let self = this
     return new Promise(function (resolve, reject) {
-
+      
       if(!Array.isArray(self.screenshots))
         resolve({ status: "Error", response: "Request params will be array with 2 string as paths { 'screenshots': ['imgs/1.png', 'imgs/2.png'] }" })
 
