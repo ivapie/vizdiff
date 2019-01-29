@@ -50,7 +50,6 @@ class ComparateScreenShot {
       if(!Array.isArray(self.screenshots))
         resolve({ status: "Error", response: "Request params will be array with 2 string as paths { 'screenshots': ['imgs/1.png', 'imgs/2.png'] }" })
 
-
       // TODO: Validate 2 URL before to start process
       self.screenshots.map( (url) => {
         let pathUrl = path.join(__dirname, url)
@@ -181,7 +180,3 @@ process.on('unhandledRejection', (reason, error) => {
 });
 
 module.exports = ComparateScreenShot
-
-
-
-
